@@ -1,12 +1,17 @@
 # Sssecrets
 
-Welcome to sssecrets: **S**imple **S**tructured **Secrets**.
+[![Gem Version](https://badge.fury.io/rb/sssecrets.svg)](https://badge.fury.io/rb/sssecrets) [![RubyDoc](https://img.shields.io/static/v1?url=https%3A%2F%2Frubydoc.info%2Fgems%2Fsssecrets&label=RubyDoc&message=sssecrets&color=informational)](https://rubydoc.info/gems/sssecrets) [![Build](https://github.com/chtzvt/sssecrets/actions/workflows/main.yml/badge.svg)](https://github.com/chtzvt/sssecrets/actions/workflows/main.yml) [![Publish](https://github.com/chtzvt/sssecrets/actions/workflows/release.yml/badge.svg)](https://github.com/chtzvt/sssecrets/actions/workflows/release.yml) 
 
-Sssecrets is a reusable implementation of GitHub's structured secret token format. You can learn more about GitHub's design process and the properties of their API token format on the [GitHub blog](https://github.blog/2021-04-05-behind-githubs-new-authentication-token-formats/).
 
-## Why Structured Secrets? 
+Welcome to sssecrets: **S**imple **S**tructured **Secrets**. Sssecrets is a library for generating secrets (like API tokens, etc) in line with best practices.
 
-If you're a developer and your application issues some kind of access tokens (API keys, PATs, etc), it's important to format these in a way that both identifies the string as a secret token and provides insight into its permissions. Even better if you provide example (dummy) tokens and regexes for them in your documentation!
+Sssecrets is a reusable implementation of GitHub's [API token format](https://github.blog/2021-04-05-behind-githubs-new-authentication-token-formats/) (which is also used by [NPM](https://github.blog/2021-09-23-announcing-npms-new-access-token-format/)), and it's designed to make it simple for developers to issue secure secret tokens that are easy to detect when leaked. 
+
+You can learn more about GitHub's design process and the properties of this API token format on the [GitHub blog](https://github.blog/2021-04-05-behind-githubs-new-authentication-token-formats/).
+
+## Why Structured Secrets?
+
+If you're a developer and your application issues some kind of access tokens (API keys, PATs, etc), it's important to format these in a way that both identifies the string as a secret token and provides insight into its permissions. For bonus points, you should also provide example (dummy) tokens and regexes for them in your documentation.
 
 Simple Structured Secrets help solve this problem: They're a compact format with properties that are optimized for detection with static analysis tools. That makes it possible to automatically detect when secrets are leaked in a codebase using features like [GitHub Secret Scanning](https://docs.github.com/en/code-security/secret-scanning/about-secret-scanning) or GitLab Secret Detection.
 
@@ -22,13 +27,19 @@ While random, strings in this format are used in many places for non-sensitive p
 
 Structured secrets have three parts:
 
-- A prefix (defined by you),
-- 30 characters of randomness,
-- A 6 character checksum.
+- A prefix (2-10 characters, defined by you)
+- 30 characters of randomness
+- A 6 character checksum
 
-That's it!
+That's it! 
+
+Here's the format:
 
 `[prefix]_[randomness][checksum]`
+
+An example Sssecret, with an `org` of `t` and a `type` of `k`, looks like this:
+
+`tk_GNrRoBa1p9nuwm7XrWkrhYUNQ7edOw4GUp8I`
 
 ### Prefix
 
@@ -51,6 +62,8 @@ The random component of the token is used to calculate a CRC32 checksum. This ch
 The token checksum can be used as a first-pass validity check. Using these checksums, false positives can be more or less eliminated when a codebase is being scanned for secrets, as fake tokens can be ignored without the need to query a backend or database.
 
 _Note that this library can only check whether a given token is in the correct form and has a valid checksum. To fully determine whether a given token is active, you'll still need to implement your own logic for checking the validity of tokens you've issued._
+
+_Another note: Because Sssecrets uses the same format as GitHub tokens, you can also perform offline validation of GitHub-issued secrets with `SimpleStructuredSecrets#validate`._
 
 ## Installation
 

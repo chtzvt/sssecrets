@@ -1,11 +1,24 @@
-name: Ruby
+name: Build
 
 on:
   push:
     branches:
       - master
-
+    paths-ignore:
+      - '.**'
+      - 'LICENSE'
+      - 'ACKNOWLEDGEMENTS'
+      - '**.md'
+      - '**.txt'
+      - '**.yml'
   pull_request:
+    paths-ignore:
+      - '.**'
+      - 'LICENSE'
+      - 'ACKNOWLEDGEMENTS'
+      - '**.md'
+      - '**.txt'
+      - '**.yml'
 
 jobs:
   build:

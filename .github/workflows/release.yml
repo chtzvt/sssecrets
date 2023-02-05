@@ -1,39 +1,40 @@
-name: publish
+name: Publish
 
 on:
   release:
     types: [published]
 
+permissions:
+  actions: read
+  contents: read
+  checks: read
+  packages: write
+  statuses: write
+
 jobs:
-  setup: 
-    name: Set Up Environment
+  publish-ghp:
+    name: Publish Gem to GitHub Packages
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - uses: ruby/setup-ruby@v1
         with:
+          ruby-version: "3.2.0"
           bundler-cache: true
       - run: bundle install
-
-  publish-ghp:
-    needs: [setup]
-    name: Publish Gem
-    runs-on: ubuntu-latest
-    steps:
-      - name: Publish
-        shell: bash
+      - shell: bash
         run: |
           set +x
           mkdir -p ~/.gem
           cat << EOF > ~/.gem/credentials
           ---
-          :github: Bearer ${{ GITHUB_TOKEN }}
-          :rubygems_api_key: ${{ secrets.RUBYGEMS_API_KEY }}
+          :github: Bearer ${{ secrets.GITHUB_TOKEN }}
+          :rubygems: ${{ secrets.RUBYGEMS_API_KEY }}
           EOF
 
           chmod 0600 ~/.gem/credentials
           set -x
 
           bundle exec gem build *.gemspec
-          bundle exec gem push --key github --host "https://rubygems.pkg.github.com/chtzvt"
-          bundle exec gem push --key rubygems_api_key --host "https://rubygems.org"
+          bundle exec gem push *.gem --key github --host "https://rubygems.pkg.github.com/chtzvt"
+          # bundle exec gem push *.gem --key rubygems --host "https://rubygems.org" - Need to work out OTP codes
