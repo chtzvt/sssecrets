@@ -9,6 +9,10 @@ Sssecrets is a reusable implementation of GitHub's [API token format](https://gi
 
 You can learn more about GitHub's design process and the properties of this API token format on the [GitHub blog](https://github.blog/2021-04-05-behind-githubs-new-authentication-token-formats/).
 
+### Want to use Sssecrets with Devise?
+
+Check out [this demo](https://github.com/chtzvt/sssecrets-devise) to learn how you can use sssecrets as a drop-in replacement for the framework's [built-in friendly token generator](https://github.com/heartcombo/devise/blob/main/lib/devise.rb#L507).
+
 ## Why Structured Secrets?
 
 If you're a developer and your application issues some kind of access tokens (API keys, PATs, etc), it's important to format these in a way that both identifies the string as a secret token and provides insight into its permissions. For bonus points, you should also provide example (dummy) tokens and regexes for them in your documentation.
