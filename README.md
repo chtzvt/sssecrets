@@ -11,7 +11,7 @@ You can learn more about GitHub's design process and the properties of this API 
 
 ### Want to use Sssecrets with Devise?
 
-Check out [this demo](https://github.com/chtzvt/sssecrets-devise) to learn how you can use sssecrets as a drop-in replacement for the framework's [built-in friendly token generator](https://github.com/heartcombo/devise/blob/main/lib/devise.rb#L507).
+Check out [this demo](https://github.com/chtzvt/devise-sssecrets-demo) to learn how you can use the [devise-sssecrets](https://github.com/chtzvt/devise-sssecrets) gem as a drop-in replacement for the framework's [built-in friendly token generator](https://github.com/heartcombo/devise/blob/main/lib/devise.rb#L507).
 
 ## Why Structured Secrets?
 
