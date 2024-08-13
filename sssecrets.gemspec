@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |spec|
   spec.name = "sssecrets"
-  spec.version = "1.0.0"
+  spec.version = "1.0.1"
   spec.authors = ["Charlton Trezevant"]
 
   spec.summary = "Simple Structured Secrets"
